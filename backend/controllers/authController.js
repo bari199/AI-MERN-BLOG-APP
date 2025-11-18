@@ -1,0 +1,85 @@
+import User from "../models/User.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
+//Generate JWT Token
+
+const generateToken = (userId) => {
+    return jwt.sign({id:userId}, process.env.JWT_SECRET, {expiresIn: "7d"});
+};
+
+//@desc Register a new user
+//@route POST /api/auth/register
+//@access Public
+const registerUser = async (req,res) => {
+    try {
+        const {name,email, password,profileImageUrl, bio , adminAccessToken} = req.body;
+        const userExists  = await User.findOne({email});
+        if(!userExists){
+            return res.status(400).json({message:"User already exists"});
+        }
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password,salt);
+
+        //Determine user role : Admin if correct token is provided , otherwise Member
+        let role = "member";
+        if(
+            adminAccessToken && 
+            adminAccessToken == process.env.ADMIN_ACCESS_TOKEN
+        ){
+            role = "admin";
+        }
+    
+    const user = await User.create({
+        name,
+        email,
+        password:hashedPassword,
+        profileImageUrl,
+        bio,
+        role,
+    });
+
+    res.status(201).json({
+        _id:user._id,
+        name:user.name,
+        email:user.email,
+        profileImageUrl:user.profileImageUrl,
+        bio:user.bio,
+        role,
+        token:generateToken(user._id),
+    });
+    } catch (error) {
+        res.status(500).json({message: "Server error", error:error.message});
+    }
+};
+
+//@desc Login user
+//@route POST /api/auth/login
+//@access Public
+
+const loginUser = async (req, res) => {
+ try {
+        
+    } catch (error) {
+        res.status(500).json({message: "Server error", error:error.message});
+    }
+
+
+};
+
+//@desc   Get user profile
+//@route  GET /api/auth/profile
+//@access Private (Requires JWT)
+
+const getUserProfile = async (req,res) => {
+ try {
+        
+    } catch (error) {
+        res.status(500).json({message: "Server error", error:error.message});
+    }
+
+
+};
+
+export { registerUser, loginUser, getUserProfile }
+

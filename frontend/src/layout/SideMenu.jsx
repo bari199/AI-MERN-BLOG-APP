@@ -2,9 +2,10 @@ import React from "react";
 import { BLOG_NAVBAR_DATA, SIDE_MENU_DATA } from "../utils/data";
 import { LuLogOut } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
+import CharAvatar from '../Cards/CharAvatar';
 
 const SideMenu = ({ activeMenu, isBlogMenu }) => {
-    const user = null;
+    const user = {name:"Mike"};
     const navigate = useNavigate();
 
     const handleClick = (route) => {
