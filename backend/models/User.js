@@ -14,4 +14,5 @@ const UserSchema = new mongoose.Schema(
 
 // 👈 FIX: Changed CommonJS export to ES Module default export
 const User = mongoose.model("User", UserSchema);
+
 export default User;

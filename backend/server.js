@@ -8,7 +8,7 @@ import connectDB from './config/db.js'; // Note the .js extension
 
 // Import Routes (Uncomment as needed)
 import authRoutes from './routes/authRoutes.js';
-// import blogPostRoutes from './routes/blogPostRoutes.js';
+import blogPostRoutes from './routes/blogPostRoutes.js';
 // import commentRoutes from './routes/commentRoutes.js';
 // import dashboardRoutes from './routes/dashboardRoutes.js';
 
@@ -36,7 +36,7 @@ app.use(express.json());
 
 // Routes (Uncomment as needed)
  app.use("/api/auth", authRoutes);
-// app.use("/api/posts", blogPostRoutes);
+ app.use("/api/posts", blogPostRoutes);
 // app.use("/api/comments", commentRoutes);
 // app.use("/api/dashboard-summary", dashboardRoutes);
 // app.use("/api/ai", aiRoutes);
