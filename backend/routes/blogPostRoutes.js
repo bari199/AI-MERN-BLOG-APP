@@ -6,7 +6,7 @@ import {
     updatePost,
     deletePost,
     getAllPosts,
-    getPostBySlung,
+    getPostBySlug,
     getPostsByTag,
     searchPosts,
     likePost,
@@ -14,7 +14,7 @@ import {
     incrementView,
 } from "../controllers/blogPostController.js";
 
-import { protect } from "../middlewares/authMiddleware.js";
+import protect from "../middlewares/authMiddleware.js";
 
 // Admin-only middleware
 const adminOnly = (req, res, next) => {
@@ -28,7 +28,7 @@ const adminOnly = (req, res, next) => {
 // Routes
 router.post("/", protect, adminOnly, createPost); // CREATE POST (Admin only)
 router.get("/", getAllPosts); // GET ALL POSTS
-router.get("/slug/:slug", getPostBySlung); // GET BY SLUG
+router.get("/slug/:slug", getPostBySlug); // GET BY SLUG
 router.put("/:id", protect, adminOnly, updatePost); // UPDATE POST (Admin only)
 router.delete("/:id", protect, adminOnly, deletePost); // DELETE POST (Admin only)
 router.get("/tag/:tag", getPostsByTag); // FILTER BY TAG

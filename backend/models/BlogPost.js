@@ -1,8 +1,9 @@
+// module.js
 import mongoose from "mongoose";
 
 const BlogPostSchema = new mongoose.Schema(
   {
-    title: { types: String, required: true },
+    title: { type: String, required: true },
     slug: { type: String, required: true, unique: true },
     content: { type: String, required: true },
     coverImageUrl: { type: String, default: null },
@@ -20,4 +21,6 @@ const BlogPostSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("BlogPost", BlogPostSchema);
+// Export as default ES module
+const BlogPost = mongoose.model("BlogPost", BlogPostSchema);
+export default BlogPost;
