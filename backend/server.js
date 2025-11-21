@@ -10,7 +10,8 @@ import connectDB from './config/db.js'; // Note the .js extension
 import authRoutes from './routes/authRoutes.js';
 import blogPostRoutes from './routes/blogPostRoutes.js';
 import commentRoutes from './routes/commentRoutes.js';
-// import dashboardRoutes from './routes/dashboardRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
+import aiRoutes from './routes/aiRoutes.js';
 
 // --- ES Module equivalent of __dirname ---
 const __filename = fileURLToPath(import.meta.url);
@@ -38,8 +39,8 @@ app.use(express.json());
  app.use("/api/auth", authRoutes);
  app.use("/api/posts", blogPostRoutes);
  app.use("/api/comments", commentRoutes);
-// app.use("/api/dashboard-summary", dashboardRoutes);
-// app.use("/api/ai", aiRoutes);
+ app.use("/api/dashboard-summary", dashboardRoutes);
+ app.use("/api/ai", aiRoutes);
 
 // Server uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads"), {}));

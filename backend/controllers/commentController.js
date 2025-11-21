@@ -75,7 +75,35 @@ const getAllComments = async (req, res) => {
 // @access  Public
 const getCommentsByPost = async (req, res) => {
   try {
+    const {postId} = req.params;
 
+    const comments = await Comment.find({post : postId})
+      .populate("author","name profileImageUrl")
+      .populate("post","title coverImageUrl")
+      .sort({ createdAt: 1 })
+    // Create a map for commentId -> COMMENTS object
+    const commentMap = {};
+    comments.forEach(comment => {
+      comment = comment.toObject(); // Convert from Mongoose Document to plane object
+      comment.replies = []
+      commentMap[comment._id] = comment;
+    });
+
+
+    //Nest replies under their parentComment 
+    const nestedComments = [];
+    comments.forEach(comment => {
+      if(comment.parentComment){
+        const parent = commentMap[comment.parentComment];
+        if(parent){
+          parent.replies.push(commentMap[comment._id]);
+        }
+      }else{
+        nestedComments.push(commentMap[comment._id]);
+      }
+    });
+
+    res.json(nestedComments);
   } catch (error) {
     res.status(500).json({
       message: "Failed to fetch comments",
@@ -89,6 +117,21 @@ const getCommentsByPost = async (req, res) => {
 // @access  Private
 const deleteComment = async (req, res) => {
   try {
+    const {commentId} = req.params;
+
+    const comment = await Comment.findById(commentId);
+    if(!comment){
+      return res.status(404).json({message:"Comment not found"});
+    }
+
+    //Delete the comment 
+    await Comment.deleteOne({_id:commentId});
+
+    // Delete all replies to this comment (one level of nesting)
+    await Comment.deleteMany({parentComment:commentId});
+
+    res.json({message:"Comment amd any replies deleted successfully "});
+
   } catch (error) {
     res.status(500).json({
       message: "Failed to delete comment",
@@ -97,7 +140,6 @@ const deleteComment = async (req, res) => {
   }
 };
 
-// ✅ Correct ESM export
 export {
   addComment,
   getCommentsByPost,
