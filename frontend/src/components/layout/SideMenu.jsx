@@ -1,5 +1,5 @@
 import React from "react";
-import { BLOG_NAVBAR_DATA, SIDE_MENU_DATA } from "../utils/data";
+import { BLOG_NAVBAR_DATA, SIDE_MENU_DATA } from "../../utils/data.js";
 import { LuLogOut } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import CharAvatar from '../Cards/CharAvatar';

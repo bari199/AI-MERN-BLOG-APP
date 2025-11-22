@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { LuImage, LuSearch } from "react-icons/lu";
-import { BLOG_NAVBAR_DATA } from "../../utils/data";
+import { BLOG_NAVBAR_DATA } from "../../../utils/data";
 import SideMenu from "../SideMenu";
 
-import Logo from "../../assets/logo.png";
+import Logo from "../../../assets/logo.png";
 
 const BlogNavbar = () => {
   const [openSideMenu, setOpenSideMenu] = useState(false);

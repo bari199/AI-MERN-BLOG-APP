@@ -1,5 +1,5 @@
 import React from 'react'
-import BlogLayout from '../../../layout/BlogLayout/BlogLayout'
+import BlogLayout from '../../../components/layout/BlogLayout/BlogLayout'
 
 const BlogLandingPage = () => {
   return (
