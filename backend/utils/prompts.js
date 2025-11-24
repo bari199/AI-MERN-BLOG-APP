@@ -1,62 +1,75 @@
-const blogPostIdeasPromt = (topic) => `
-Generate a list of 5 blog post ideas related to ${topic}.
+// ----------------------------- Blog Ideas Prompt -----------------------------
+const blogPostIdeasPrompt = (topic) => `
+Generate a list of exactly **5 blog post ideas** related to: "${topic}".
 
-For each blog post idea, return:
-- a title 
-- a 2-line description about the post 
-- 3 relevant tags 
+For each idea, return:
+- a title
+- a 2-line description
+- 3 relevant tags
 - the tone (e.g., technical, casual, beginner-friendly, etc.)
 
-Return the result as an array of JSON Objects in this format:
+Return the result strictly as **valid JSON**, formatted like this:
+
 [
-    {
-        "title": "",
-        "description": "",
-        "tags": ["", "", ""],
-        "tone": ""
-    }
+  {
+    "title": "",
+    "description": "",
+    "tags": ["", "", ""],
+    "tone": ""
+  }
 ]
 
-Important: Do NOT add any extra text outside the JSON format. Only return valid JSON.
+Important rules:
+- Do NOT add explanations.
+- Do NOT add markdown.
+- Do NOT include code fences like \`\`\`.
+- Only return the JSON array.
 `;
 
 
+// ----------------------------- Reply Prompt -----------------------------
 function generateReplyPrompt(comment) {
-    const authorName = comment.author?.name || "User";
-    const content = comment.content;
+  const authorName = comment.author?.name || "User";
+  const content = comment.content;
 
-    return `
-You're replying to a blog comment by ${authorName}.  
-The comment says:
+  return `
+You are writing a helpful and concise reply to a blog comment.
 
-"${content}"
+Comment Author: ${authorName}
+Comment: "${content}"
 
-Write a thoughtful, concise, and relevant reply to this comment.
-`;
+Write a friendly, relevant, and thoughtful reply (2–4 sentences).
+  `;
 }
 
 
+// ----------------------------- Blog Summary Prompt -----------------------------
 const blogSummaryPrompt = (blogContent) => `
-You are an AI assistant that summarizes blog posts.
+Read the blog post below and generate:
 
-Instructions:
-- Read the blog post content below.
-- Generate a short, catchy, SEO-friendly title (max 12 words).
-- Write a clear, engaging summary of about 300 words.
-- At the end of the summary, add a markdown section titled **## What You'll Learn**.
-- Under that heading, list 3–5 key takeaways or skills the reader will learn in bullet points using markdown (-).
+1. A short, catchy, SEO-friendly title (max 12 words).
+2. A clear, engaging summary of about 300 words.
+3. At the end of the summary, include a markdown section:
 
-Return the result in **valid JSON** with the following structure:
+## What You'll Learn
+- bullet point
+- bullet point
+- bullet point
+(3–5 bullets total)
+
+Return the result strictly as **valid JSON** with this structure:
 {
-    "title": "Short SEO-friendly title",
-    "summary": "300-word summary with a markdown section for What You'll Learn"
+  "title": "Short SEO-friendly title",
+  "summary": "300-word summary with the markdown section included at the end"
 }
 
-Only return valid JSON. Do NOT include markdown or code blocks around the JSON.
+Important rules:
+- Do NOT add extra text.
+- Do NOT include code blocks or markdown outside the JSON.
+- Only return valid JSON.
 
 Blog Post Content:
 ${blogContent}
 `;
 
-
-export { blogPostIdeasPromt, generateReplyPrompt, blogSummaryPrompt };
+export { blogPostIdeasPrompt, generateReplyPrompt, blogSummaryPrompt };

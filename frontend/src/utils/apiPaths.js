@@ -7,8 +7,8 @@ export const API_PATHS = {
         GET_PROFILE: "/api/auth/profile", //GET logged -in user details
     },
 
-    IMAGE: {
-        UPLOADE_IMAGE: "/api/auth/upload-image", //Upload profile picture
+    IMAGE:{
+        UPLOAD_IMAGE: "/api/auth/upload-image", //Upload profile picture
     },
 
     DASHBOARD: {

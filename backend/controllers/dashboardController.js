@@ -1,5 +1,5 @@
-import BlogPost from "../models/BlogPost";
-import Comment from "../models/Comment";
+import BlogPost from "../models/BlogPost.js";
+import Comment from "../models/Comment.js";
 
 // @desc    Dashboard summary
 // @route   POST /api/dashboard-summary

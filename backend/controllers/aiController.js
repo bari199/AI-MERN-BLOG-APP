@@ -2,139 +2,136 @@ import { GoogleGenAI } from "@google/genai";
 
 import {
   blogPostIdeasPrompt,
-  generateReplyPrompt,
   blogSummaryPrompt,
+  generateReplyPrompt,
+  
 } from "../utils/prompts.js";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-// @desc   Generative blog content from title
-// @route  Post /api/ai/generate
-// @access Private
-
+// --------------------- Generate Blog Post ---------------------
 const generateBlogPost = async (req, res) => {
   try {
-    const {title, tone } = req.body;
+    const { title, tone } = req.body;
 
-    if(!title || !tone){
-        return res.status(400).json({message: "Missing required fields "});
+    if (!title || !tone) {
+      return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const prompt = `Write a markdown-formatted blog post titled "${title}".Use a ${tone} tone.Include an introduction , subheadings, code examples if relevant, and a conclusion.`;
+    const prompt = `
+      Write a markdown-formatted blog post titled "${title}".
+      Use a ${tone} tone. Include an introduction, subheadings,
+      code examples if relevant, and a conclusion.
+    `;
 
     const response = await ai.models.generateContent({
-        model:"gemini-2.0-flash-lite",
-        contents:prompt,
+      model: "gemini-2.0-flash-lite",
+      contents: prompt,
     });
 
-    let rawText =response.text;
+    let rawText = response.text;
     res.status(200).json(rawText);
+
   } catch (error) {
     res.status(500).json({
-      message: "Failed to generate blog post ",
+      message: "Failed to generate blog post",
       error: error.message,
     });
   }
 };
 
-// @desc    Generate blog post ideas from title
-// @route   POST /api/ai/generate-ideas
-// @access  Private
-
+// --------------------- Generate Ideas ---------------------
 const generateBlogPostIdeas = async (req, res) => {
   try {
-    const {topics } = req.body;
-    if(!topics){
-        return res.status(400).json({message: "Missing required fields "});
+    const { topics } = req.body;
+
+    if (!topics) {
+      return res.status(400).json({ message: "Missing required fields" });
     }
+
     const prompt = blogPostIdeasPrompt(topics);
 
     const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash-lite",
-        contents:prompt,
+      model: "gemini-2.0-flash-lite",
+      contents: prompt,
     });
+
     let rawText = response.text;
 
-    // Clean it: Remove ```json and ``` from beginning and end 
     const cleanedText = rawText
-        .replace(/^```json\s*/,"")
-        .replace(/```$/,"") // remove editing ````
-        .trim(); // remove extra spaces 
+      .replace(/^```json\s*/, "")
+      .replace(/```$/, "")
+      .trim();
 
-    // Now safe to parse
     const data = JSON.parse(cleanedText);
 
     res.status(200).json(data);
 
   } catch (error) {
     res.status(500).json({
-      message: "Failed to generate blog Idea .",
+      message: "Failed to generate blog idea",
       error: error.message,
     });
   }
 };
 
-// @desc    Generate comment reply
-// @route   POST /api/ai/generate-reply
-// @access  Private
+// --------------------- Generate Reply ---------------------
 const generateCommentReply = async (req, res) => {
   try {
-    const {author, content} = req.body;
+    const { author, content } = req.body;
 
-    if(!content){
-        return res.status(400).json({message:"Missing required fields"});
+    if (!content) {
+      return res.status(400).json({ message: "Missing required fields" });
     }
 
     const prompt = generateReplyPrompt({ author, content });
 
-    const reponse = await ai.models.generateContent({
-        model:"gemini-2.0-flash-lite",
-        contents:prompt,
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash-lite",
+      contents: prompt,
     });
 
     let rawText = response.text;
     res.status(200).json(rawText);
+
   } catch (error) {
     res.status(500).json({
-      message: "Failed to generateComment reply. ",
+      message: "Failed to generate comment reply",
       error: error.message,
     });
   }
 };
 
-// @desc   Generate blog post Summary
-// @route  POST /api/ai/generate-summary
-// @access Private
+// --------------------- Generate Summary ---------------------
 const generatePostSummary = async (req, res) => {
   try {
-    const {content} = req.body;
-    if(!content){
-        return res.status(400).json({message: "Missing required fields"});
+    const { content } = req.body;
+
+    if (!content) {
+      return res.status(400).json({ message: "Missing required fields" });
     }
+
     const prompt = blogSummaryPrompt(content);
 
     const response = await ai.models.generateContent({
-        model:"gemini-2.0-flash-lite",
-        contents:prompt,
+      model: "gemini-2.0-flash-lite",
+      contents: prompt,
     });
 
     let rawText = response.text;
 
-    // Clean it: Remove ```json and ``` from beginning and end 
+    const cleanedText = rawText
+      .replace(/^```json\s*/, "")
+      .replace(/```$/, "")
+      .trim();
 
-    const cleanedText = rawText 
-        .replaced(/^```json\s*/,"")// remove starting  ```json 
-        .replace(/```$/,"") //remove ending ````
-        .trim(); //remove extra spaces
-
-    // Now safe to parse
     const data = JSON.parse(cleanedText);
+
     res.status(200).json(data);
-    
 
   } catch (error) {
     res.status(500).json({
-      message: "Failed to generate blog  Summary . ",
+      message: "Failed to generate summary",
       error: error.message,
     });
   }
