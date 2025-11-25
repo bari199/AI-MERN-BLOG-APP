@@ -17,14 +17,14 @@ export const SIDE_MENU_DATA = [
     },
     {
         id: "02",
-        label:"Dashboard",
-        icon:LuLayoutDashboard,
+        label:"Blog post",
+        icon:LuGalleryVerticalEnd,
         path:"/admin/posts",
     },
     {
         id: "03",
-        label:"Dashboard",
-        icon:LuLayoutDashboard,
+        label:"Comments",
+        icon:LuMessageSquareQuote,
         path:"/admin/comments",
     },
 

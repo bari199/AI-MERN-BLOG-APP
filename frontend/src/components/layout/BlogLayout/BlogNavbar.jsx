@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import { LuSearch } from "react-icons/lu";
 import { BLOG_NAVBAR_DATA } from "../../../utils/data";
 import SideMenu from "../SideMenu";
-
+import Modal from "../../Loader/Modal";
 import Logo from "../../../assets/logo.png";
 import { UserContext } from "../../../context/userContext";
 import ProfileInfoCard from "../../Cards/ProfileInfoCard"; // ✅ Missing import fixed
+import Login from "../../Auth/Login";
+import SignUp from "../../Auth/Signup";
 
 const BlogNavbar = ({ activeMenu }) => {
   const { user, setOpenAuthForm } = useContext(UserContext);
@@ -20,7 +22,6 @@ const BlogNavbar = ({ activeMenu }) => {
     <>
       <div className="bg-white border border-b border-gray-200/50 backdrop-blur-[2px] py-4 px-7 sticky top-0 z-30">
         <div className="container mx-auto flex items-center justify-between gap-5">
-
           {/* Left Section */}
           <div className="flex gap-5">
             <button
@@ -87,35 +88,39 @@ const BlogNavbar = ({ activeMenu }) => {
         {/* Side Menu */}
         {openSideMenu && (
           <div className="fixed top-[61px] -ml-4 bg-white">
-            <SideMenu activeMenu={currentMenu} isBlogMenu />
+            <SideMenu
+              activeMenu={currentMenu}
+              isBlogMenu
+              setOpenSideMenu={setOpenSideMenu}
+            />
           </div>
         )}
       </div>
 
-        <AuthModel/>
-
+      <AuthModel />
     </>
   );
 };
 
 export default BlogNavbar;
 
-const AuthModel =() => {
-  const {openAuthForm, setOpenAuthForm} = useContext(UserContext);
+const AuthModel = () => {
+  const { openAuthForm, setOpenAuthForm } = useContext(UserContext);
   const [currentPage, setCurrentPage] = useState("login");
 
   return (
-    <>
-    
-    <Modal 
-    isOpen={openAuthForm}
-    onClose={()=>{
-      setOpenAuthForm(false);
-      setCurrentPage("login");
-    }}
-    hideHeader>
-      <div className=""></div>
-    </>
-  )
-
-}
+    <Modal
+      isOpen={openAuthForm}
+      onClose={() => {
+        setOpenAuthForm(false);
+        setCurrentPage("login");
+      }}
+      hideHeader
+    >
+      <div>
+        {currentPage === "login" && <Login setCurrentPage={setCurrentPage} />}
+        {currentPage === "signup" && <SignUp setCurrentPage={setCurrentPage} />}
+      </div>
+    </Modal>
+  );
+};

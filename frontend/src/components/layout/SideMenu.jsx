@@ -1,23 +1,27 @@
-import React from "react";
-import { BLOG_NAVBAR_DATA, SIDE_MENU_DATA } from "../../utils/data.js";
+import React,{useContext} from "react";
+import { BLOG_NAVBAR_DATA, SIDE_MENU_DATA } from "../../utils/data";
 import { LuLogOut } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import CharAvatar from '../Cards/CharAvatar';
+import { UserContext } from "../../context/userContext.jsx";
 
-const SideMenu = ({ activeMenu, isBlogMenu }) => {
-    const user = {name:"Mike"};
+const SideMenu = ({ activeMenu, isBlogMenu, setOpenSideMenu }) => {
+    const {user, setUser} = useContext(UserContext);
     const navigate = useNavigate();
 
-    const handleClick = (route) => {
+    const handelClick = (route) => {
         if (route === "logout") {
-            handleLogout();
+            handelLogout();
             return;
         }
+        setOpenSideMenu((prevState) => !prevState );
         navigate(route);
     };
 
-    const handleLogout = () => {
+    const handelLogout = () => {
         localStorage.clear();
+        setUser(null);
+        setOpenSideMenu((prevState) => !prevState);
         navigate("/");
     };
 
@@ -58,7 +62,7 @@ const SideMenu = ({ activeMenu, isBlogMenu }) => {
                             ? "text-white bg-linear-to-r from-sky-500 to-cyan-400"
                             : ""
                     } py-3 px-6 rounded-lg mb-3 cursor-pointer`}
-                    onClick={() => handleClick(item.path)}
+                    onClick={() => handelClick(item.path)}
                 >
                     <item.icon className="text-xl" />
                     {item.label}
@@ -68,7 +72,7 @@ const SideMenu = ({ activeMenu, isBlogMenu }) => {
             {user && (
                 <button
                     className="w-full flex items-center gap-4 text-[15px] py-3 px-6 rounded-lg mb-3 cursor-pointer"
-                    onClick={handleLogout}
+                    onClick={handelLogout}
                 >
                     <LuLogOut />
                     Logout
