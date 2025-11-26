@@ -36,7 +36,7 @@ const getDashboardSummary = async (req, res) => {
 
     // Recent comments
     const recentComments = await Comment.find()
-      .sort({ createdAt: 1 })
+      .sort({ createdAt: -1 })
       .limit(5)
       .populate("author", "name profileImageUrl")
       .populate("post", "title coverImageUrl");
