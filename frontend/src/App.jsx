@@ -27,12 +27,12 @@ const App = () => {
             <Route element={<PrivateRoutes allowedRoutes={["admin"]} />} />
             <Route path="/admin/dashboard" element={<Dashboard />} />
             <Route path="/admin/posts" element={<BlogPost />} />
-            <Route path="/admin/create" elements={<BlogPostEditor />} />
+            <Route path="/admin/create" element={<BlogPostEditor />} />
             <Route
               path="/admin/edit/:postSlug"
               element={<BlogPostEditor isEdit={true} />}
             />
-            <Route path="/admin/comments" elements={<Comments />} />
+            <Route path="/admin/comments" element={<Comments />} />
 
             <Route path="/admin-login" element={<AdminLogin />} />
           </Routes>
