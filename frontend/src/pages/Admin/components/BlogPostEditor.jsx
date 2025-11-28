@@ -5,7 +5,9 @@ import CoverImageSelector from "../../../components/Inputs/CoverImageSelector";
 import TagInput from "../../../components/Inputs/TagInput";
 import BlogPostIdeaCard from "../../../components/Cards/BlogPostIdeaCard";
 import uploadImage from "../../../utils/uploadImage";
+import toast from "react-hot-toast";
 import {getToastMessageByType} from "../../../utils/helper.js";
+import DeleteAlertContent  from "../../../components/Loader/DeleteAlertContent"
 
 
 import {
@@ -381,13 +383,22 @@ const BlogPostEditor = ({ isEdit }) => {
             setOpenBlogPostGenForm({ open: false, data: null })
           }
         />
-        <div className="w-[30vw]">
-          <DeleteAlertContent
-            content="Are you sure you want to delete this blog post?"
-            onDelete={()=> deletePost()}
-          />
-        </div>
       </Modal>
+
+      <Modal
+          isOpen={openDeleteAlert}
+          onClose={()=>{
+            setOpenDeleteAlert(false)
+          }}
+          title="Delete Alert"
+        >
+          <div className="w-[30vw]">
+            <DeleteAlertContent 
+              content="Are you sure you want to delete this blog post?"
+              onDelete={()=> deletePost()}
+            />
+          </div>
+          </Modal>
     </DashboardLayout>
   );
 };
