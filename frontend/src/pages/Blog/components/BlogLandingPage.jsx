@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import BlogLayout from "../../../components/layout/BlogLayout/BlogLayout";
+import BlogPostSummaryCard from "./BlogPostSummaryCard";
 import axiosInstance from "../../../utils/axiosInstance";
 import { API_PATHS } from "../../../utils/apiPaths";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { LuGalleryVerticalEnd, LuLoaderCircle } from "react-icons/lu";
 import FeaturedBlogPost from "./FeatureBlogPost";
+import TrendingPostsSection from "./TrendingPostsSection";
 
 const BlogLandingPage = () => {
   const navigate = useNavigate();
@@ -80,7 +82,29 @@ const BlogLandingPage = () => {
           )}
 
           {/* Post grid - if needed, map posts here */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8"></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            {blogPostList.length > 0 && 
+              blogPostList.slice(1).map((item)=> (
+                <BlogPostSummaryCard
+                  key={item._id}
+                  title={item.title}
+                  coverImageUrl={item.coverImageUrl}
+                  description={item.content}
+                  tags={item.tags}
+                  updatedOn={
+                    item.updatedAt
+                      ? moment(item.updatedAt).format("Do MMM YYYY")
+                      : "-"
+                  }
+                  authorName={item.author.name}
+                  authProfileImg={item.author.authorProfileImgUrl}
+                  onClick={() => handleClick(item)}
+                />
+
+              ))}
+
+
+          </div>
 
           {page < totalPages && (
             <div className="flex items-center justify-center">
@@ -99,6 +123,9 @@ const BlogLandingPage = () => {
               </button>
             </div>
           )}
+        </div>
+        <div className="col-span-12 md:col-span-3">
+          <TrendingPostsSection/>
         </div>
       </div>
     </BlogLayout>

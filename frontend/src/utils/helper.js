@@ -30,3 +30,10 @@ export const getToastMessageByType = (type) => {
             return "Blog post published succesfully";
     }
 };
+
+
+export const sanitizeMarkdown = (content) => {
+    const markdownBlockRegex = /^```(?:markdown)?\n([\s\S]*?)\n```$/;
+    const match = content.match(markdownBlockRegex);
+    return match ? match[1] : content;
+}

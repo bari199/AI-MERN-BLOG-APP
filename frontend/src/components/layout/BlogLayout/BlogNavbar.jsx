@@ -10,6 +10,7 @@ import { UserContext } from "../../../context/userContext";
 import ProfileInfoCard from "../../Cards/ProfileInfoCard"; // ✅ Missing import fixed
 import Login from "../../Auth/Login";
 import SignUp from "../../Auth/Signup";
+import SearchBarPopup  from "../../../pages/Blog/components/SearchBarPopup"
 
 const BlogNavbar = ({ activeMenu }) => {
   const { user, setOpenAuthForm } = useContext(UserContext);
@@ -98,6 +99,8 @@ const BlogNavbar = ({ activeMenu }) => {
       </div>
 
       <AuthModel />
+      <SearchBarPopup isOpen={openSearchBar} setIsOpen={setOpenSearchBar}/>
+
     </>
   );
 };
