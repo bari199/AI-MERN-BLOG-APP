@@ -27,7 +27,7 @@ const CommentReplyInput = ({
 
     try {
       const aiResponse = await axiosInstance.post(
-        API_PATHS.GENERATE_COMMENT_REPLY,
+        API_PATHS.AI.GENERATE_COMMENT_REPLY,
         {
           author: { name: authorName },
           content,

@@ -61,7 +61,7 @@ const CommentInfoCard = ({
               alt={authorName}
               className="w-10 h-10 rounded-full"
             />
-
+            
             <div className="flex-1">
               <div className="flex items-center gap-1">
                 <h3 className="text-[12px] text-gray-500 font-medium">@{authorName}</h3>

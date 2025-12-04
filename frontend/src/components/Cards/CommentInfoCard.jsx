@@ -1,15 +1,12 @@
 import React, { useContext, useState } from "react";
-import {
-  LuChevronDown,
-  LuDot,
-  LuReply,
-  LuTrash2,
-} from "react-icons/lu";
+import { LuChevronDown, LuDot, LuReply, LuTrash2 } from "react-icons/lu";
 import { UserContext } from "../../context/userContext";
 import toast from "react-hot-toast";
 import axiosInstance from "../../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { API_PATHS } from "../../utils/apiPaths";
+import CommentReplyInput from "../../components/Inputs/CommentReplyInput";
+
 import moment from "moment";
 
 const CommentInfoCard = ({
@@ -24,34 +21,44 @@ const CommentInfoCard = ({
   onDelete,
   isSubReply,
 }) => {
-
   const { user } = useContext(UserContext);
 
   const [replyText, setReplyText] = useState("");
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showSubReplies, setShowSubReplies] = useState(false);
 
+  // CANCEL REPLY (MISSING FUNCTION)
+  const handleCancelReply = () => {
+    setReplyText("");
+    setShowReplyForm(false);
+  };
+
   // ADD REPLY
   const handleAddReply = async (e) => {
-	try {
-		console.log("post",post);
-		const response = await axiosInstance.post(
-			API_PATHS.COMMENTS.ADD(post._id),{
-				content: replyText,
-				parentCommentId: commentId
-			}
-		);
-		toast.success("Reply added successfully");
-		setReplyText("");
-		setShowReplyForm(false);
-		getAllComments();
-	} catch (error) {
-		console.log("Error adding reply:", error);	
-	}
+    try {
+      console.log("post", post);
+      const response = await axiosInstance.post(
+        API_PATHS.COMMENTS.ADD(post._id),
+        {
+          content: replyText,
+          parentCommentId: commentId,
+        }
+      );
+      toast.success("Reply added successfully");
+      setReplyText("");
+      setShowReplyForm(false);
+      getAllComments();
+    } catch (error) {
+      console.log("Error adding reply:", error);
+    }
   };
 
   return (
-    <div className={`bg-white p-3 rounded-lg cursor-pointer group ${isSubReply ? 'mb-1' : 'mb-5'}`}>
+    <div
+      className={`bg-white p-3 rounded-lg cursor-pointer group ${
+        isSubReply ? "mb-1" : "mb-5"
+      }`}
+    >
       <div className="grid grid-cols-12 gap-3">
         <div className="col-span-12 md:col-span-8 order-2 md:order-1">
           <div className="flex items-start gap-3">
@@ -67,7 +74,7 @@ const CommentInfoCard = ({
                   @{authorName}
                 </h3>
 
-                <LuDot className="text-gray-500"/>
+                <LuDot className="text-gray-500" />
 
                 <span className="text-[12px] text-gray-500 font-medium">
                   {updatedOn}
@@ -91,9 +98,7 @@ const CommentInfoCard = ({
                     <button
                       className="flex items-center gap-1.5 text-[13px] 
 					  font-medium text-sky-950 bg-sky-50 px-4 py-0.5 rounded-full hover:bg-sky-500 hover:text-white cursor-pointer"
-                      onClick={() =>
-                        setShowSubReplies((prev) => !prev)
-                      }
+                      onClick={() => setShowSubReplies((prev) => !prev)}
                     >
                       {replies?.length || 0}{" "}
                       {replies?.length === 1 ? "reply" : "replies"}{" "}
@@ -108,11 +113,11 @@ const CommentInfoCard = ({
                   className="flex items-center gap-1.5 text-[13px] font-medium text-sky-950 bg-sky-50 px-4 py-0.5 rounded-full hover:bg-rose-500 hover:text-white cursor-pointer"
                   onClick={() => onDelete(commentId)}
                 >
-                  <LuTrash2 />Delete
+                  <LuTrash2 />
+                  Delete
                 </button>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -127,26 +132,27 @@ const CommentInfoCard = ({
           />
 
           <div className="flex-1">
-			<div className="flex items-center gap-1">
-            <h4 className="text-xs text-gray-800 font-medium">{post?.title}</h4>
-			</div>
+            <div className="flex items-center gap-1">
+              <h4 className="text-xs text-gray-800 font-medium">
+                {post?.title}
+              </h4>
+            </div>
           </div>
         </div>
       )}
-	
 
       {/* Reply form */}
       {!isSubReply && showReplyForm && (
-		<CommentReplyInput
+        <CommentReplyInput
           user={user}
-		  authorName={authorName}
-		  content={content}
-		  replyText={replyText}
-		  setReplyText={setReplyText}
-		  handleAddReply={handleAddReply}
-		  handleCancelReply={handleCancelReply}
-		/>
-	  )}
+          authorName={authorName}
+          content={content}
+          replyText={replyText}
+          setReplyText={setReplyText}
+          handleAddReply={handleAddReply}
+          handleCancelReply={handleCancelReply}
+        />
+      )}
 
       {/* Sub replies */}
       {showSubReplies &&
@@ -165,9 +171,7 @@ const CommentInfoCard = ({
               replies={c.replies || []}
               isSubReply
               updatedOn={
-                c.updatedAt
-                  ? moment(c.updatedAt).format("Do MMM YYYY")
-                  : "-"
+                c.updatedAt ? moment(c.updatedAt).format("Do MMM YYYY") : "-"
               }
               onDelete={() => onDelete(c._id)}
             />

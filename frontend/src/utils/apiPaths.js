@@ -37,7 +37,7 @@ export const API_PATHS = {
     },
     COMMENTS: {
         ADD:(postId) => `/api/comments/${postId}`,
-        GET_ALL: "/api/comments", //Get all comments
+        GET_ALL:"/api/comments", //Get all comments
         GET_ALL_BY_POST:(postId) => `/api/comments/${postId}`,
         GET_BY_POST_ID: (postId) => `/api/comments/${postId}`,
         DELETE:(commentId) => `/api/comments/${commentId}`,

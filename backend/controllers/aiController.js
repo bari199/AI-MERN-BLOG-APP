@@ -76,6 +76,8 @@ const generateBlogPostIdeas = async (req, res) => {
 };
 
 // --------------------- Generate Reply ---------------------
+
+
 const generateCommentReply = async (req, res) => {
   try {
     const { author, content } = req.body;
@@ -91,7 +93,12 @@ const generateCommentReply = async (req, res) => {
       contents: prompt,
     });
 
-    let rawText = response.text;
+    // FIX: extract actual text
+    let rawText =
+      response.candidates?.[0]?.content?.parts?.[0]?.text ||
+      (await response.text?.()) ||
+      "";
+
     res.status(200).json(rawText);
 
   } catch (error) {
@@ -101,6 +108,7 @@ const generateCommentReply = async (req, res) => {
     });
   }
 };
+
 
 // --------------------- Generate Summary ---------------------
 const generatePostSummary = async (req, res) => {

@@ -30,13 +30,14 @@ const BlogLandingPage = () => {
       });
 
       const { posts, totalPages } = response.data;
-
+      
       setBlogPostList((prevPosts) =>
         pageNumber === 1 ? posts : [...prevPosts, ...posts]
       );
 
       setTotalPages(totalPages);
       setPage(pageNumber);
+      //console.log("Author Image URL:", authorProfileImgUrl);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -55,6 +56,7 @@ const BlogLandingPage = () => {
   useEffect(() => {
     getAllPosts(1);
   }, []);
+  //console.log("First blog author:", blogPostList[0].author);
 
   const handleClick = (post) => {
     navigate(`/${post.slug}`);
@@ -78,8 +80,10 @@ const BlogLandingPage = () => {
               authorName={blogPostList[0].author.name}
               authorProfileImg={blogPostList[0].author.authorProfileImgUrl}
               onClick={() => handleClick(blogPostList[0])}
+              
             />
           )}
+          
 
           {/* Post grid - if needed, map posts here */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
@@ -97,10 +101,10 @@ const BlogLandingPage = () => {
                       : "-"
                   }
                   authorName={item.author.name}
-                  authProfileImg={item.author.authorProfileImgUrl}
+                  authorProfileImg={item.author.authorProfileImgUrl}
                   onClick={() => handleClick(item)}
                 />
-
+                  
               ))}
 
 

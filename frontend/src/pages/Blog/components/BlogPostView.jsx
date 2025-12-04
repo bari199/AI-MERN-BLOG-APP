@@ -159,7 +159,7 @@ const BlogPostView = () => {
                 <LuDot className="text-xl text-gray-400" />
 
                 <div className="flex items-center flex-wrap gap-2">
-                  {(blogPostData.tag || []).slice(0, 3).map((tag, index) => (
+                  {(blogPostData.tags || []).slice(0, 3).map((tag, index) => (
                     <button
                       key={index}
                       className="bg-sky-200/50 text-sky-800/80 text-xs font-medium px-3 py-0.5 rounded-full"
